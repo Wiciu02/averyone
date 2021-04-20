@@ -118,20 +118,35 @@ function mousePos(e) {
     ];
 }
 
-function init() {
-    // Get the specific canvas element from the HTML document
-    canvas = document.getElementById('sketchpad');
+canvas.addEventListener("touchstart", function (e) {
+    mousePos = getTouchPos(canvas, e);
+var touch = e.touches[0];
+var mouseEvent = new MouseEvent("mousedown", {
+clientX: touch.clientX,
+clientY: touch.clientY
+});
+canvas.dispatchEvent(mouseEvent);
+}, false);
+canvas.addEventListener("touchend", function (e) {
+var mouseEvent = new MouseEvent("mouseup", {});
+canvas.dispatchEvent(mouseEvent);
+}, false);
+canvas.addEventListener("touchmove", function (e) {
+var touch = e.touches[0];
+var mouseEvent = new MouseEvent("mousemove", {
+clientX: touch.clientX,
+clientY: touch.clientY
+});
+canvas.dispatchEvent(mouseEvent);
+}, false);
 
-    // If the browser supports the canvas tag, get the 2d drawing context for this canvas
-    if (canvas.getContext)
-        ctx = canvas.getContext('2d');
-
-    // Check that we have a valid context to draw on/with before adding event handlers
-    if (ctx) {
-        canvas.addEventListener('mousedown', sketchpad_mouseDown, false);
-        canvas.addEventListener('mousemove', sketchpad_mouseMove, false);
-        window.addEventListener('mouseup', sketchpad_mouseUp, false);
-    }
+// Get the position of a touch relative to the canvas
+function getTouchPos(canvasDom, touchEvent) {
+var rect = canvasDom.getBoundingClientRect();
+return {
+x: touchEvent.touches[0].clientX - rect.left,
+y: touchEvent.touches[0].clientY - rect.top
+};
 }
 
 canvas.addEventListener("mousedown", (e) => {
