@@ -12,9 +12,9 @@ body {
 
 header{
 
-    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
     height: 156px;
-    background-color: #9E7394 !important;
 }
 
 
@@ -48,10 +48,12 @@ h1 {
     display: flex;
     align-items: center;
     justify-content: center;
-    position: absolute;
     margin-left: auto !important;
     margin-right: auto !important;
-    width: 100%;
+    background-color: #ff3800;
+    border-radius: 20%;
+    width: 700px;
+    padding: 20px;
 }
 
 #widthControl {
@@ -61,7 +63,7 @@ h1 {
     margin-left: auto;
     margin-right: auto;
     padding: 5px;
-    width: 200px;
+    width: 180px;
     
 }
 
@@ -103,7 +105,7 @@ h1 {
 }
 
 #palette {
-    width: 800px;
+    width: 700px;
     height: 40px;
     margin-left: auto;
     margin-right: auto;
@@ -122,7 +124,6 @@ h1 {
 
 .colorSquare:hover {
     transform: scale(1.2);
-    border-radius: 50%;
     cursor: pointer;
     z-index: 1;
 }
@@ -144,13 +145,14 @@ h1 {
     z-index: 100;
     margin-left: auto !important;
     margin-right: auto !important;
-    background-color: #9E7394;
+    background-color: #ff3800;
+    border-radius: 20%;
+    padding: 20px;
 }
 
 .content{
 
     align-items: center !important;
-    width: 100%;
     margin-left: auto ;
     margin-right: auto;
     text-align: center;

@@ -16,6 +16,8 @@ const drawQueue = [];
 io.on("connect", socket => {
   socketNumber++;
 
+  
+  
   io.emit("socketNumber", socketNumber);
 
   drawQueue.forEach(([...args]) => socket.emit("drawing", ...args));
@@ -34,4 +36,6 @@ io.on("connect", socket => {
     socketNumber--;
     io.emit("socketNumber", socketNumber);
   });
+
+  
 });

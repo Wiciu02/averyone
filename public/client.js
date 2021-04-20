@@ -3,10 +3,13 @@ const socket = io();
 let mousePressed = false;
 let lastPos = null;
 let drawColor = "black";
-let lineWidth = 3;
+let lineWidth = 6;
+
+
 
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
+
 
 var img = new Image();
   img.src = 'http://example.com/example.jpg';
@@ -33,6 +36,8 @@ var img = new Image();
     return false;    
   }
 
+
+  
 const download = document.getElementById('download');
 
 
@@ -94,11 +99,13 @@ socket.on("drawing", (color, width, startPos, endPos) => {
     ctx.beginPath();
     ctx.strokeStyle = color;
     ctx.lineWidth = width;
-    ctx.lineJoin = "round";
+    ctx.lineJoin = 'round';
+    ctx.lineCap = 'round';
     ctx.moveTo(...startPos);
     ctx.lineTo(...endPos);
     ctx.closePath();
     ctx.stroke();
+    
 });
 
 
@@ -111,12 +118,28 @@ function mousePos(e) {
     ];
 }
 
+function init() {
+    // Get the specific canvas element from the HTML document
+    canvas = document.getElementById('sketchpad');
+
+    // If the browser supports the canvas tag, get the 2d drawing context for this canvas
+    if (canvas.getContext)
+        ctx = canvas.getContext('2d');
+
+    // Check that we have a valid context to draw on/with before adding event handlers
+    if (ctx) {
+        canvas.addEventListener('mousedown', sketchpad_mouseDown, false);
+        canvas.addEventListener('mousemove', sketchpad_mouseMove, false);
+        window.addEventListener('mouseup', sketchpad_mouseUp, false);
+    }
+}
+
 canvas.addEventListener("mousedown", (e) => {
     mousePressed = true;
     draw(e);
 });
 
-canvas.addEventListener("mousemove", (e) => {
+canvas.addEventListener("mousemove",  (e) => {
     if (mousePressed) {
         draw(e);
     }
