@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tablica interaktywna</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css"
+      integrity="sha256-h20CPZ0QyXlBuAw7A+KluUYx/3pK+c7lYEpqLTlxjYQ="
+      crossorigin="anonymous"/>
+
+      <link rel="preconnect" href="https://fonts.gstatic.com">
+		
+		<link href="https://fonts.googleapis.com/css2?family=Texturina:wght@900&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" type="text/css" href="./style.css" />
+  </head>
+  <body>
+    <header>
+      
+      <div id="controls" >
+        <path>
+          
+        </path>
+        <div class="content">
+        <div id="widthControl"  title="choose a line width">
+          <div class="widthExample"></div>
+          <div class="widthExample"></div>
+          <div class="widthExample"></div>
+          <div class="widthExample"></div>
+          <div class="widthExample"></div>
+        </div>
+        <div id="palette" title="choose a color"></div>
+    
+        <div id="clearBtn" title="clear the canvas" style="display: none;">
+          <i class="fa fa-trash" aria-hidden="true"></i>
+        </div>
+        <button id="download">Pobierz</button>
+        <input type="file" id="imageLoader" name="imageLoader" />
+      </div>
+        <div id="counterDiv">
+          <span id="counter">0</span> uczniów <br />jest aktywnych
+        </div>
+      
+      </div>
+    </header>
+    <div id="wrapper" >
+      <canvas id="canvas" width="2000" height="10000">  </canvas>
+      
+    </div>
+    
+  </body>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script type="module" src="./client.js"></script>
+  <script src="jquery-1.11.3.min.js"></script>
+  <script>
+ 
+    $(document).ready(function() {
+    var NavY = $('.content').offset().top;
+      
+    var stickyNav = function(){
+    var ScrollY = $(window).scrollTop();
+           
+    if (ScrollY > NavY) { 
+        $('.content').addClass('sticky');
+    } else {
+        $('.content').removeClass('sticky'); 
+    }
+    };
+      
+    stickyNav();
+      
+    $(window).scroll(function() {
+        stickyNav();
+    });
+    });
+     
+</script>
+
+</html>
