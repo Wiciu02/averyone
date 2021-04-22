@@ -168,38 +168,7 @@ var drawer = {
         }
     }
 };
-// create a function to pass touch events and coordinates to drawer
-function draw(event) { 
-    var type = null;
-    // map mouse events to touch events
-    switch(event.type){
-        case "mousedown":
-                event.touches = [];
-                event.touches[0] = { 
-                    pageX: event.pageX,
-                    pageY: event.pageY
-                };
-                type = "touchstart";                  
-        break;
-        case "mousemove":                
-                event.touches = [];
-                event.touches[0] = { 
-                    pageX: event.pageX,
-                    pageY: event.pageY
-                };
-                type = "touchmove";                
-        break;
-        case "mouseup":                
-                event.touches = [];
-                event.touches[0] = { 
-                    pageX: event.pageX,
-                    pageY: event.pageY
-                };
-                type = "touchend";
-        break;
-    }        
 
-    // touchend clear the touches[0], so we need to use changedTouches[0]
     var coors;
     if(event.type === "touchend") {
         coors = {
