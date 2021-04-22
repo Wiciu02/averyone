@@ -180,7 +180,9 @@ h1 {
     cursor: pointer;
     z-index: 1;
 }
-
+.active, .btn:hover {
+    color: #292929;
+  }
 #counterDiv {
     font-size: 14px;
     text-align: left;
