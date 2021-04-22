@@ -61,6 +61,7 @@ change.addEventListener('click', function(e) {
 
     drawColor = "white";
     lineWidth = 50;
+    canvas.style.cursor = "url('./eraser-fill.png'), auto";
 });
 
 const alertt = document.getElementById('alert');
@@ -76,6 +77,7 @@ pencil.addEventListener('click', function(e) {
 
     drawColor = "black";
     lineWidth = 5;
+    canvas.style.cursor = "url('./jakiss.png'), auto";
 });
 
 // Get the container element
@@ -99,7 +101,7 @@ marker.addEventListener('click', function(e) {
 
     drawColor = "aquamarine";
     lineWidth = 5;
-    
+    canvas.style.cursor = "url('./pen-nib-fill.png'), auto";
 });
 
 
@@ -143,6 +145,7 @@ function draw(e) {
         socket.emit("drawing", drawColor, lineWidth, lastPos, [x, y]);
     }
 }
+
 
 socket.on("drawing", (color, width, startPos, endPos) => {
     ctx.beginPath();
