@@ -137,6 +137,11 @@ document.addEventListener("mouseup", (e) => {
     lastPos = null;
 });
 
+canvas.ontouchstart = function(e) {
+  if (e.touches) e = e.touches[0];
+  return false;
+}
+
 function preventDefault(e) {
     e.preventDefault();
 }
