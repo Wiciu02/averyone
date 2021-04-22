@@ -109,15 +109,14 @@ socket.on("drawing", (color, width, startPos, endPos) => {
 
 
 
+function mousePos(e) {
     const rect = canvas.getBoundingClientRect();
     return [
         (e.clientX - rect.left) * (canvas.width / rect.width),
         (e.clientY - rect.top) * (canvas.height / rect.height),
     ];
 }
-window.addEventListener('load', function () {
-  
-  
+
 canvas.addEventListener("mousedown", (e) => {
     mousePressed = true;
     draw(e);
@@ -137,7 +136,13 @@ document.addEventListener("mouseup", (e) => {
     mousePressed = false;
     lastPos = null;
 });
-
+window.addEventListener('load', function () {
+  
+  canvas.ontouchstart = function(e) {
+  if (e.touches) e = e.touches[0];
+  return false;
+}
+  
 function preventDefault(e) {
     e.preventDefault();
 }
@@ -177,9 +182,17 @@ if (touchAvailable) {
    canvas.addEventListener('touchstart', draw, false);
    canvas.addEventListener('touchmove', draw, false);
    canvas.addEventListener('touchend', draw, false);
-} 
+} else {
+   canvas.addEventListener('mousedown', draw, false);
+   canvas.addEventListener('mousemove', draw, false);
+   canvas.addEventListener('mouseup', draw, false);
+}
   
-
+ document.body.addEventListener('touchmove', function (event) {
+   event.preventDefault();
+}, false);
+  
+ });
 
 document.getElementById("clearBtn").addEventListener("click", () => {
     socket.emit("clearCanvas");
