@@ -115,7 +115,13 @@ function mousePos(e) {
         (e.clientY - rect.top) * (canvas.height / rect.height),
     ];
 }
-
+window.addEventListener('load', function () {
+  
+ canvas.ontouchstart = function(e) {
+  if (e.touches) e = e.touches[0];
+  return false;
+} 
+  
 canvas.addEventListener("mousedown", (e) => {
     mousePressed = true;
     draw(e);
@@ -176,6 +182,12 @@ if (touchAvailable) {
    canvas.addEventListener('touchmove', draw, false);
    canvas.addEventListener('touchend', draw, false);
 } 
+  
+ document.body.addEventListener('touchmove', function (event) {
+   event.preventDefault();
+}, false);
+  
+});
 
 document.getElementById("clearBtn").addEventListener("click", () => {
     socket.emit("clearCanvas");
