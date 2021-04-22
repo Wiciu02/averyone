@@ -151,13 +151,13 @@ var drawer = {
    isDrawing: true,
    touchstart: function (coors) {
       ctx.beginPath();
-      ctx.moveTo(coors.x, coors.y);
+      ctx.moveTo(...startPos);
       this.isDrawing = true;
       disableScroll(); // add for new iOS support
    },
    touchmove: function (coors) {
       if (this.isDrawing) {
-         ctx.lineTo(coors.x, coors.y);
+         ctx.lineTo(...endPos);
          ctx.stroke();
       }
    },
