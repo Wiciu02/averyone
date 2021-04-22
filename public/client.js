@@ -148,7 +148,7 @@ function enableScroll() {
 }
 
 var drawer = {
-   isDrawing: false,
+   isDrawing: true,
    touchstart: function (coors) {
       ctx.beginPath();
       ctx.moveTo(coors.x, coors.y);
@@ -164,7 +164,7 @@ var drawer = {
    touchend: function (coors) {
       if (this.isDrawing) {
          this.touchmove(coors);
-         this.isDrawing = false;
+         this.isDrawing = true;
       }
       enableScroll(); // add for new iOS support
    }
@@ -176,12 +176,7 @@ if (touchAvailable) {
    canvas.addEventListener('touchstart', draw, false);
    canvas.addEventListener('touchmove', draw, false);
    canvas.addEventListener('touchend', draw, false);
-} else {
-   canvas.addEventListener('mousedown', draw, false);
-   canvas.addEventListener('mousemove', draw, false);
-   canvas.addEventListener('mouseup', draw, false);
 }
-
 document.body.addEventListener('touchmove', function (event) {
    event.preventDefault();
 }, false);
