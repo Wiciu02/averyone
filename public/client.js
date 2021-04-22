@@ -136,11 +136,7 @@ document.addEventListener("mouseup", (e) => {
     mousePressed = false;
     lastPos = null;
 });
-window.addEventListener('click', function () {
-canvas.ontouchstart = function(e) {
-  if (e.touches) e = e.touches[0];
-  return false;
-}
+window.addEventListener('load', function () {
 
 function preventDefault(e) {
     e.preventDefault();
