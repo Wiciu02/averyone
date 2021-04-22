@@ -195,6 +195,10 @@ document.querySelectorAll(".colorSquare").forEach((square) => {
     });
 });
 
+document.body.addEventListener('touchmove', function (event) {
+    event.preventDefault();
+ }, false);
+
 document.querySelectorAll(".widthExample").forEach((ex) => {
     ex.addEventListener("click", () => {
         lineWidth = ex.clientWidth;
