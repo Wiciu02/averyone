@@ -137,12 +137,7 @@ document.addEventListener("mouseup", (e) => {
     lastPos = null;
 });
 
-  
-  canvas.ontouchstart = function(e) {
-  if (e.touches) e = e.touches[0];
-  return false;
-}
-  
+ 
 function preventDefault(e) {
     e.preventDefault();
 }
@@ -182,15 +177,7 @@ if (touchAvailable) {
    canvas.addEventListener('touchstart', draw, false);
    canvas.addEventListener('touchmove', draw, false);
    canvas.addEventListener('touchend', draw, false);
-} else {
-   canvas.addEventListener('mousedown', draw, false);
-   canvas.addEventListener('mousemove', draw, false);
-   canvas.addEventListener('mouseup', draw, false);
-}
-
-  
- 
-
+  }
 document.getElementById("clearBtn").addEventListener("click", () => {
     socket.emit("clearCanvas");
 });
