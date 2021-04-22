@@ -117,10 +117,6 @@ socket.on("drawing", (color, width, startPos, endPos) => {
 }
 window.addEventListener('load', function () {
   
- canvas.ontouchstart = function(e) {
-  if (e.touches) e = e.touches[0];
-  return false;
-} 
   
 canvas.addEventListener("mousedown", (e) => {
     mousePressed = true;
