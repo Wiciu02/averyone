@@ -136,7 +136,7 @@ document.addEventListener("mouseup", (e) => {
     mousePressed = false;
     lastPos = null;
 });
-window.addEventListener('load', function draw(e) {
+window.addEventListener('load', function () {
 
 function preventDefault(e) {
     e.preventDefault();
