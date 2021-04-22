@@ -138,39 +138,10 @@ document.addEventListener("mouseup", (e) => {
 });
 
  
-function preventDefault(e) {
-    e.preventDefault();
-}
-function disableScroll() {
-    document.body.addEventListener('touchmove', preventDefault, { passive: false });
-}
-function enableScroll() {
-    document.body.removeEventListener('touchmove', preventDefault);
-}
-
-var drawer = {
-    isDrawing: false,
-    touchstart: function (coors) {
-       ctx.beginPath();
-       ctx.moveTo(coors.x, coors.y);
-       this.isDrawing = true;
-       disableScroll(); // add for new iOS support
-    },
-    touchmove: function (coors) {
-       if (this.isDrawing) {
-          ctx.lineTo(coors.x, coors.y);
-          ctx.stroke();
-       }
-    },
-    touchend: function (coors) {
-       if (this.isDrawing) {
-          this.touchmove(coors);
-          this.isDrawing = false;
-       }
-       enableScroll(); // add for new iOS support
-    }
- };
-
+canvas.addEventListener("touchend", function (e) {
+  var mouseEvent = new MouseEvent("mouseup", {});
+  canvas.dispatchEvent(mouseEvent);
+}, false);
 canvas.addEventListener("touchmove", function (e) {
   var touch = e.touches[0];
   var mouseEvent = new MouseEvent("mousemove", {
@@ -180,13 +151,29 @@ canvas.addEventListener("touchmove", function (e) {
   canvas.dispatchEvent(mouseEvent);
 }, false);
 
-var touchAvailable = ('createTouch' in document) || ('onstarttouch' in window);
-
-if (touchAvailable) {
-   canvas.addEventListener('touchstart', draw, false);
-   canvas.addEventListener('touchmove', draw, false);
-   canvas.addEventListener('touchend', draw, false);
+// Get the position of a touch relative to the canvas
+function getTouchPos(canvasDom, touchEvent) {
+  var rect = canvasDom.getBoundingClientRect();
+  return {
+    x: touchEvent.touches[0].clientX - rect.left,
+    y: touchEvent.touches[0].clientY - rect.top
+  };
+}
+document.body.addEventListener("touchstart", function (e) {
+  if (e.target == canvas) {
+    e.preventDefault();
   }
+}, false);
+document.body.addEventListener("touchend", function (e) {
+  if (e.target == canvas) {
+    e.preventDefault();
+  }
+}, false);
+document.body.addEventListener("touchmove", function (e) {
+  if (e.target == canvas) {
+    e.preventDefault();
+  }
+}, false);
 document.getElementById("clearBtn").addEventListener("click", () => {
     socket.emit("clearCanvas");
 });
