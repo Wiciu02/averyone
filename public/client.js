@@ -179,10 +179,6 @@ if (touchAvailable) {
    canvas.addEventListener('touchend', draw, false);
 } 
   
- document.body.addEventListener('touchmove', function (event) {
-   event.preventDefault();
-}, false);
-  
 
 
 document.getElementById("clearBtn").addEventListener("click", () => {
