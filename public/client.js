@@ -108,7 +108,7 @@ socket.on("drawing", (color, width, startPos, endPos) => {
 });
 
 
-function mousePos(e) {
+
     const rect = canvas.getBoundingClientRect();
     return [
         (e.clientX - rect.left) * (canvas.width / rect.width),
@@ -187,7 +187,7 @@ if (touchAvailable) {
    event.preventDefault();
 }, false);
   
-});
+
 
 document.getElementById("clearBtn").addEventListener("click", () => {
     socket.emit("clearCanvas");
