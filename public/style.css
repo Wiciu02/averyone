@@ -148,6 +148,7 @@ h1 {
     background-color: #ff3800;
     border-radius: 20%;
     padding: 20px;
+    border: 4px inset #000;
 }
 
 .content{

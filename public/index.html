@@ -18,7 +18,53 @@
     
     <link rel="stylesheet" type="text/css" href="./style.css" />
 
-    
+    <script src="fabric2.4.3.js"></script>
+    <script>
+        var canvas = new fabric.Canvas('canvas',{
+            isDrawingMode: true,
+        });
+        canvas.setBackgroundImage('/pdf-pages/2-page-013.jpg', canvas.renderAll.bind(canvas), {
+            originX: 'left', 
+            originY: 'top'
+        });
+        var ctx = canvas.getContext('2d');
+        $("#eraser").on("click", function(){
+              canvas.isDrawingMode = 1;
+              canvas.freeDrawingBrush.color = "red";
+              canvas.freeDrawingBrush.width = 20;
+              canvas.freeDrawingBrush.globalCompositeOperation = 'destination-out';
+              canvas.freeDrawingBrush.id = 'erasure';
+              ctx.beginPath(); // the context of canvas
+              canvas.renderAll();
+        });
+        $("#drawer").on("click", function(){
+              canvas.isDrawingMode = 1;
+              canvas.freeDrawingBrush.color = "blue";
+              canvas.freeDrawingBrush.width = 10;
+              canvas.freeDrawingBrush.globalCompositeOperation = 'destination-over';
+              canvas.freeDrawingBrush.id = 'drawer';
+              canvas.renderAll();
+        });
+        $("#selection").on("click", function(){
+              canvas.isDrawingMode = false;
+              canvas.selection = true;
+            canvas.selectable = true;
+        });
+        
+        function restoreSketch(imageSVG) {
+            fabric.loadSVGFromString(imageSVG, function (objects, options) {
+              $.each(objects, function (index, value) {
+                if (value.id && value.id == 'erasure') {
+                  value.set({
+                   globalCompositeOperation: 'destination-out'
+                  }); //set gCO for value
+                }
+             });                          
+             var obj = fabric.util.groupSVGElements(objects, options);
+             canvas.add(obj).renderAll();
+          });
+        }
+    </script>
 
   </head>
   <body>
@@ -35,12 +81,14 @@
           <div class="widthExample"></div>
           <div class="widthExample"></div>
           <div class="widthExample"></div>
+          <div class="Example"></div>
         </div>
         <div id="palette" title="choose a color"></div>
     
-        <div id="clearBtn" title="clear the canvas" style="display: none;">
+        <button id="clearBtn" title="clear the canvas">
           <i class="fa fa-trash" aria-hidden="true"></i>
-        </div>
+        </button>
+        <button type="button" value="erase" id="eraser" >Gumka</button>
         <button id="download">Pobierz</button>
         <input type="file" id="imageLoader" name="imageLoader" />
       </div>

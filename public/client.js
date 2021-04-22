@@ -3,14 +3,13 @@ const socket = io();
 let mousePressed = false;
 let lastPos = null;
 let drawColor = "black";
-let lineWidth = 6;
-
-
+let lineWidth = 5;
+let img = [];
 
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 
-
+socket.on("img", function(img){
 var img = new Image();
   img.src = 'http://example.com/example.jpg';
  
@@ -35,7 +34,7 @@ var img = new Image();
     reader.readAsDataURL(e.target.files[0]);  
     return false;    
   }
-
+});
 
   
 const download = document.getElementById('download');
@@ -118,53 +117,6 @@ function mousePos(e) {
     ];
 }
 
-canvas.addEventListener("touchstart", function (e) {
-    mousePos = getTouchPos(canvas, e);
-var touch = e.touches[0];
-var mouseEvent = new MouseEvent("mousedown", {
-clientX: touch.clientX,
-clientY: touch.clientY
-});
-canvas.dispatchEvent(mouseEvent);
-}, false);
-canvas.addEventListener("touchend", function (e) {
-var mouseEvent = new MouseEvent("mouseup", {});
-canvas.dispatchEvent(mouseEvent);
-}, false);
-canvas.addEventListener("touchmove", function (e) {
-var touch = e.touches[0];
-var mouseEvent = new MouseEvent("mousemove", {
-clientX: touch.clientX,
-clientY: touch.clientY
-});
-canvas.dispatchEvent(mouseEvent);
-}, false);
-
-// Get the position of a touch relative to the canvas
-function getTouchPos(canvasDom, touchEvent) {
-var rect = canvasDom.getBoundingClientRect();
-return {
-x: touchEvent.touches[0].clientX - rect.left,
-y: touchEvent.touches[0].clientY - rect.top
-};
-}
-
-document.body.addEventListener("touchstart", function (e) {
-    if (e.target == canvas) {
-      e.preventDefault();
-    }
-  }, false);
-  document.body.addEventListener("touchend", function (e) {
-    if (e.target == canvas) {
-      e.preventDefault();
-    }
-  }, false);
-  document.body.addEventListener("touchmove", function (e) {
-    if (e.target == canvas) {
-      e.preventDefault();
-    }
-  }, false);
-
 canvas.addEventListener("mousedown", (e) => {
     mousePressed = true;
     draw(e);
@@ -184,6 +136,47 @@ document.addEventListener("mouseup", (e) => {
     mousePressed = false;
     lastPos = null;
 });
+
+function preventDefault(e) {
+    e.preventDefault();
+}
+function disableScroll() {
+    document.body.addEventListener('touchmove', preventDefault, { passive: false });
+}
+function enableScroll() {
+    document.body.removeEventListener('touchmove', preventDefault);
+}
+
+var drawer = {
+    isDrawing: false,
+    touchstart: function (coors) {
+       ctx.beginPath();
+       ctx.moveTo(coors.x, coors.y);
+       this.isDrawing = true;
+       disableScroll(); // add for new iOS support
+    },
+    touchmove: function (coors) {
+       if (this.isDrawing) {
+          ctx.lineTo(coors.x, coors.y);
+          ctx.stroke();
+       }
+    },
+    touchend: function (coors) {
+       if (this.isDrawing) {
+          this.touchmove(coors);
+          this.isDrawing = false;
+       }
+       enableScroll(); // add for new iOS support
+    }
+ };
+
+var touchAvailable = ('createTouch' in document) || ('onstarttouch' in window);
+
+if (touchAvailable) {
+   canvas.addEventListener('touchstart', draw, false);
+   canvas.addEventListener('touchmove', draw, false);
+   canvas.addEventListener('touchend', draw, false);
+} 
 
 document.getElementById("clearBtn").addEventListener("click", () => {
     socket.emit("clearCanvas");
@@ -211,28 +204,6 @@ document.querySelectorAll(".widthExample").forEach((ex) => {
         ex.style.opacity = 1;
     });
 });
-
-const startDraw = (ev, strokeColor = paintColor, strokeWidth = strokeSize, blendMode = "normal") => {
-    console.log("Start Draw!!", ev.center.x, ev.center.y);
-    var path = new paper.Path({
-        strokeColor: strokeColor,
-        strokeWidth: strokeWidth,
-        strokeCap: "round",
-        blendMode: blendMode
-    });
-}
-
-// handle middleDraw
-const middleDraw = (ev) => {
-    console.log("Middle Draw!!", ev.center.x, ev.center.y);
-    paper.project._activeLayer.lastChild.add({x: ev.center.x, y: ev.center.y})
-}
-
-// handle endDraw
-const endDraw = (ev) => {
-    console.log("End Draw!!", ev.center.x, ev.center.y);
-    paper.project._activeLayer.lastChild.simplify(20)
-}
 
 socket.on("socketNumber", (number) => {
     document.getElementById("counter").innerText = number;

@@ -26,6 +26,10 @@ io.on("connect", socket => {
     drawQueue.length = 0;
     io.emit("clearCanvas");
   });
+  socket.on("img", () => {
+    drawQueue.push();
+    io.emit("img");
+  });
 
   socket.on("drawing", (...args) => {
     drawQueue.push([...args]);
