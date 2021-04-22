@@ -149,44 +149,27 @@ function enableScroll() {
 }
 
 var drawer = {
-    isDrawing: false,
-    touchstart: function (coors) {
-        context.beginPath();
-        context.moveTo(coors.x, coors.y);
-        this.isDrawing = true;
-    },
-    touchmove: function (coors) {
-        if (this.isDrawing) {
-            context.lineTo(coors.x, coors.y);
-            context.stroke();
-        }
-    },
-    touchend: function (coors) {
-        if (this.isDrawing) {
-            this.touchmove(coors);
-            this.isDrawing = false;
-        }
-    }
+   isDrawing: false,
+   touchstart: function (coors) {
+      ctx.beginPath();
+      ctx.moveTo(coors.x, coors.y);
+      this.isDrawing = true;
+      disableScroll(); // add for new iOS support
+   },
+   touchmove: function (coors) {
+      if (this.isDrawing) {
+         ctx.lineTo(coors.x, coors.y);
+         ctx.stroke();
+      }
+   },
+   touchend: function (coors) {
+      if (this.isDrawing) {
+         this.touchmove(coors);
+         this.isDrawing = false;
+      }
+      enableScroll(); // add for new iOS support
+   }
 };
-
-    var coors;
-    if(event.type === "touchend") {
-        coors = {
-            x: event.changedTouches[0].pageX,
-            y: event.changedTouches[0].pageY
-        };
-    }
-    else {
-        // get the touch coordinates
-        coors = {
-            x: event.touches[0].pageX,
-            y: event.touches[0].pageY
-        };
-    }
-    type = type || event.type
-    // pass the coordinates to the appropriate handler
-    drawer[type](coors);
-}
 
 document.body.addEventListener('touchmove', function (event) {
     event.preventDefault();
