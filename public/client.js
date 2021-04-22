@@ -136,7 +136,7 @@ document.addEventListener("mouseup", (e) => {
     mousePressed = false;
     lastPos = null;
 });
-
+window.addEventListener('click', function () {
 canvas.ontouchstart = function(e) {
   if (e.touches) e = e.touches[0];
   return false;
@@ -185,7 +185,7 @@ if (touchAvailable) {
 document.body.addEventListener('touchmove', function (event) {
    event.preventDefault();
 }, false);
-
+});
 document.getElementById("clearBtn").addEventListener("click", () => {
     socket.emit("clearCanvas");
 });
