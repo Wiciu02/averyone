@@ -219,23 +219,6 @@ function draw(event) {
     drawer[type](coors);
 }
 
-// detect touch capabilities
-var touchAvailable = ('createTouch' in document) || ('ontouchstart' in window);
-
-// attach the touchstart, touchmove, touchend event listeners.
-if(touchAvailable){
-    canvas.addEventListener('touchstart', draw, false);
-    canvas.addEventListener('touchmove', draw, false);
-    canvas.addEventListener('touchend', draw, false);        
-}    
-// attach the mousedown, mousemove, mouseup event listeners.
-else {
-    canvas.addEventListener('mousedown', draw, false);
-    canvas.addEventListener('mousemove', draw, false);
-    canvas.addEventListener('mouseup', draw, false);
-}
-
-// prevent elastic scrolling
 document.body.addEventListener('touchmove', function (event) {
     event.preventDefault();
 }, false); // end body.onTouchMove
