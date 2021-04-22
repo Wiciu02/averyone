@@ -107,10 +107,6 @@ socket.on("drawing", (color, width, startPos, endPos) => {
     
 });
 
-canvas.ontouchstart = function(e) {
-  if (e.touches) e = e.touches[0];
-  return false;
-}
 
 function mousePos(e) {
     const rect = canvas.getBoundingClientRect();
