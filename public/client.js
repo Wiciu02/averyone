@@ -6,10 +6,12 @@ let drawColor = "black";
 let lineWidth = 5;
 let img = [];
 
+
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
-
-socket.on("img", function(img){
+ctx.fillStyle = 'white';
+ctx.fillRect(0,0,canvas.width, canvas.height);
+socket.on("photos", () => {
 var img = new Image();
   img.src = 'http://example.com/example.jpg';
  
@@ -21,7 +23,7 @@ var img = new Image();
 
   var imageLoader = document.getElementById('imageLoader');
   imageLoader.addEventListener('change', loadImage, false);
- 
+
   function loadImage(e) {
     var reader = new FileReader();
     reader.onload = function(event){
@@ -34,8 +36,8 @@ var img = new Image();
     reader.readAsDataURL(e.target.files[0]);  
     return false;    
   }
-});
 
+});
   
 const download = document.getElementById('download');
 
@@ -52,6 +54,39 @@ download.addEventListener('click', function(e) {
 
 
 createPalette();
+
+const change = document.getElementById('eraser');
+
+change.addEventListener('click', function(e) {
+
+    drawColor = "white";
+    lineWidth = 50;
+});
+
+const alertt = document.getElementById('alert');
+
+alertt.addEventListener('click', function(e) {
+
+    alert("Miłego dnia, życzy invisionapp.pl")
+});
+
+const pencil = document.getElementById('pencil');
+
+pencil.addEventListener('click', function(e) {
+
+    drawColor = "black";
+    lineWidth = 5;
+});
+
+const marker = document.getElementById('prostokat');
+
+marker.addEventListener('click', function(e) {
+
+    drawColor = "aquamarine";
+    lineWidth = 5;
+    
+});
+
 
 function createPalette() {
     const COLORS = [
@@ -136,7 +171,6 @@ document.addEventListener("mouseup", (e) => {
     mousePressed = false;
     lastPos = null;
 });
-window.addEventListener('load', function () {
 
 function preventDefault(e) {
     e.preventDefault();
@@ -149,33 +183,27 @@ function enableScroll() {
 }
 
 var drawer = {
-   isDrawing: false,
-   touchstart: function (coors) {
-      ctx.beginPath();
-      ctx.moveTo(coors.x, coors.y);
-      this.isDrawing = true;
-      disableScroll(); // add for new iOS support
-   },
-   touchmove: function (coors) {
-      if (this.isDrawing) {
-         ctx.lineTo(coors.x, coors.y);
-         ctx.stroke();
-      }
-   },
-   touchend: function (coors) {
-      if (this.isDrawing) {
-         this.touchmove(coors);
-         this.isDrawing = false;
-      }
-      enableScroll(); // add for new iOS support
-   }
-};
-
-document.body.addEventListener('touchmove', function (event) {
-    event.preventDefault();
-}, false); // end body.onTouchMove
-
-}, false); // end window.onLoad
+    isDrawing: false,
+    touchstart: function (coors) {
+       ctx.beginPath();
+       ctx.moveTo(coors.x, coors.y);
+       this.isDrawing = true;
+       disableScroll(); // add for new iOS support
+    },
+    touchmove: function (coors) {
+       if (this.isDrawing) {
+          ctx.lineTo(coors.x, coors.y);
+          ctx.stroke();
+       }
+    },
+    touchend: function (coors) {
+       if (this.isDrawing) {
+          this.touchmove(coors);
+          this.isDrawing = false;
+       }
+       enableScroll(); // add for new iOS support
+    }
+ };
 
 var touchAvailable = ('createTouch' in document) || ('onstarttouch' in window);
 
@@ -183,11 +211,8 @@ if (touchAvailable) {
    canvas.addEventListener('touchstart', draw, false);
    canvas.addEventListener('touchmove', draw, false);
    canvas.addEventListener('touchend', draw, false);
-}
-document.body.addEventListener('touchmove', function (event) {
-   event.preventDefault();
-}, false);
-});
+} 
+
 document.getElementById("clearBtn").addEventListener("click", () => {
     socket.emit("clearCanvas");
 });
