@@ -6,6 +6,13 @@ let drawColor = "black";
 let lineWidth = 5;
 let img = [];
 
+let password = prompt("Podaj hasło:");
+if (password == "norq") //hasło obecne
+{
+alert("Podane hasło jest poprawne!");
+} else {
+alert("Podane hasło jest błędne!");
+}
 
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
