@@ -1,3 +1,4 @@
+
 const socket = io();
 
 let mousePressed = false;
@@ -6,46 +7,12 @@ let drawColor = "black";
 let lineWidth = 5;
 let img = [];
 
-let password = prompt("Podaj hasło:");
-if (password == "norq") //hasło obecne
-{
-alert("Podane hasło jest poprawne!");
-} else {
-alert("Podane hasło jest błędne!");
-}
 
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 ctx.fillStyle = 'white';
 ctx.fillRect(0,0,canvas.width, canvas.height);
-socket.on("photos", () => {
-var img = new Image();
-  img.src = 'http://example.com/example.jpg';
- 
-  //Wait for image to finish loading
-  img.onload = function() {
-    //Draw the image on the canvas
-    ctx.drawImage(img, x, y);
-  }
 
-  var imageLoader = document.getElementById('imageLoader');
-  imageLoader.addEventListener('change', loadImage, false);
-
-  function loadImage(e) {
-    var reader = new FileReader();
-    reader.onload = function(event){
-        img = new Image();
-        img.onload = function(){
-          ctx.drawImage(img,200,200);
-        }
-        img.src = event.target.result;
-    }
-    reader.readAsDataURL(e.target.files[0]);  
-    return false;    
-  }
-
-});
-  
 const download = document.getElementById('download');
 
 
@@ -58,8 +25,6 @@ download.addEventListener('click', function(e) {
   link.delete;
 });
 
-
-
 createPalette();
 
 const change = document.getElementById('eraser');
@@ -69,6 +34,7 @@ change.addEventListener('click', function(e) {
     drawColor = "white";
     lineWidth = 50;
     canvas.style.cursor = "url('./eraser-fill.png'), auto";
+    ctx.clearRect(0, 0, canvas.x, canvas.y);
 });
 
 const alertt = document.getElementById('alert');
@@ -153,7 +119,6 @@ function draw(e) {
     }
 }
 
-
 socket.on("drawing", (color, width, startPos, endPos) => {
     ctx.beginPath();
     ctx.strokeStyle = color;
@@ -175,6 +140,7 @@ function mousePos(e) {
         (e.clientX - rect.left) * (canvas.width / rect.width),
         (e.clientY - rect.top) * (canvas.height / rect.height),
     ];
+   
 }
 
 canvas.addEventListener("mousedown", (e) => {
@@ -239,7 +205,14 @@ if (touchAvailable) {
 } 
 
 document.getElementById("clearBtn").addEventListener("click", () => {
+    let password = prompt("Czy na pewno chcesz wymazać całą kanwę? Podaj hasło admina: ")
+    if(password == "admin2021")
+    {
     socket.emit("clearCanvas");
+    alert("Wymazałeś całą kanwę!");
+    } else {
+        alert("Nie masz stosownych uprawnień, aby wymazać kanwę!");
+    }
 });
 
 socket.on("clearCanvas", () => {
